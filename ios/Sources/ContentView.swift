@@ -63,7 +63,7 @@ struct SettingsView: View {
                     Text("访问令牌由你在部署服务器时设置；不是 GitHub 或 Replay 官方账号密码。")
                 }
                 Section("关于") {
-                    LabeledContent("客户端", value: "ReplayCloud 1.1")
+                    LabeledContent("客户端", value: "ReplayCloud 1.2")
                     LabeledContent("推理", value: "官方 Replay Server（linux-x64）")
                     Text("提示：http 明文连接仅建议个人临时使用；有域名可在服务器前加 HTTPS 反代。")
                         .font(.caption)
@@ -118,6 +118,7 @@ struct SettingsView: View {
 
 struct DocumentPicker: UIViewControllerRepresentable {
     let onPick: (URL) -> Void
+    var onError: (String) -> Void = { _ in }
 
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         let vc = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.audio])
@@ -128,23 +129,46 @@ struct DocumentPicker: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {}
 
-    func makeCoordinator() -> Coordinator { Coordinator(onPick: onPick) }
+    func makeCoordinator() -> Coordinator { Coordinator(onPick: onPick, onError: onError) }
 
     final class Coordinator: NSObject, UIDocumentPickerDelegate {
         let onPick: (URL) -> Void
-        init(onPick: @escaping (URL) -> Void) { self.onPick = onPick }
+        let onError: (String) -> Void
+        init(onPick: @escaping (URL) -> Void, onError: @escaping (String) -> Void) {
+            self.onPick = onPick
+            self.onError = onError
+        }
 
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-            guard let url = urls.first else { return }
-            let scoped = url.startAccessingSecurityScopedResource()
-            defer { if scoped { url.stopAccessingSecurityScopedResource() } }
-            let tmp = FileManager.default.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
-            try? FileManager.default.removeItem(at: tmp)
-            do {
-                try FileManager.default.copyItem(at: url, to: tmp)
-                onPick(tmp)
-            } catch {
-                print("复制音频失败: \(error)")
+            guard let source = urls.first else {
+                onError("没有取得所选文件")
+                return
+            }
+            let scoped = source.startAccessingSecurityScopedResource()
+            // iCloud/“文件”提供商可能要求协调读取；复制放到后台，避免卡住界面。
+            DispatchQueue.global(qos: .userInitiated).async {
+                defer { if scoped { source.stopAccessingSecurityScopedResource() } }
+                do {
+                    let folder = FileManager.default.temporaryDirectory
+                        .appendingPathComponent("ReplayCloudImports", isDirectory: true)
+                        .appendingPathComponent(UUID().uuidString, isDirectory: true)
+                    try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+                    let destination = folder.appendingPathComponent(source.lastPathComponent)
+                    var coordinationError: NSError?
+                    var copyError: Error?
+                    NSFileCoordinator(filePresenter: nil).coordinate(readingItemAt: source, options: [], error: &coordinationError) { coordinatedURL in
+                        do {
+                            try FileManager.default.copyItem(at: coordinatedURL, to: destination)
+                        } catch {
+                            copyError = error
+                        }
+                    }
+                    if let copyError { throw copyError }
+                    if let coordinationError { throw coordinationError }
+                    DispatchQueue.main.async { onPick(destination) }
+                } catch {
+                    DispatchQueue.main.async { onError(error.localizedDescription) }
+                }
             }
         }
     }
