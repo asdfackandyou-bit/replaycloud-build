@@ -99,10 +99,15 @@ struct CreateSongView: View {
             }
             .navigationTitle("生成翻唱")
             .sheet(isPresented: $showPicker) {
-                DocumentPicker { url in
+                DocumentPicker(onPick: { url in
                     pickedFile = url
                     pickedName = url.lastPathComponent
-                }
+                    log = "✅ 音频已导入，可以开始生成"
+                }, onError: { message in
+                    pickedFile = nil
+                    pickedName = ""
+                    log = "❌ 音频导入失败：\(message)\n请先在“文件”App 中把音频下载到本机，再重新选择。"
+                })
             }
             .onAppear(perform: loadModels)
         }
