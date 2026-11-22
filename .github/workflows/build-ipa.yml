@@ -1,0 +1,50 @@
+name: Build unsigned IPA
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "ios/**"
+      - ".github/workflows/build-ipa.yml"
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        working-directory: ios
+        run: xcodegen generate
+
+      - name: Build (no codesign)
+        working-directory: ios
+        run: |
+          xcodebuild \
+            -project ReplayCloud.xcodeproj \
+            -scheme ReplayCloud \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            clean build
+
+      - name: Package IPA
+        working-directory: ios
+        run: |
+          mkdir -p out/Payload
+          cp -R build/Build/Products/Release-iphoneos/ReplayCloud.app out/Payload/
+          cd out && zip -qry ../ReplayCloud-unsigned.ipa Payload
+          ls -lh ../ReplayCloud-unsigned.ipa
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: ReplayCloud-unsigned-ipa
+          path: ios/ReplayCloud-unsigned.ipa
+          retention-days: 30
