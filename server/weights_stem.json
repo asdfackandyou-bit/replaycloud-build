@@ -1,0 +1,26 @@
+[
+ {
+  "name": "UVR-MDX-NET-Voc_FT.onnx",
+  "type": "file",
+  "size": 66762490,
+  "sha1": "06474f0aa507d12e4384b20fd7adebd4abdd388b"
+ },
+ {
+  "name": "UVR_MDXNET_KARA.pth",
+  "type": "file",
+  "size": 29818140,
+  "sha1": "c6675f8110f3f4e9f825fe68a10b2a3a58d20bb7"
+ },
+ {
+  "name": "UVR-MDX-NET-Voc_FT.pth",
+  "type": "file",
+  "size": 66873677,
+  "sha1": "5a42526d5f992e24f02793f81244095e8a40a8ab"
+ },
+ {
+  "name": "UVR-DeEcho-DeReverb.pth",
+  "type": "file",
+  "size": 223650277,
+  "sha1": "f732e6df65dd5d8fa61642f4af8fa26b549e17bc"
+ }
+]
