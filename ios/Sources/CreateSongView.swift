@@ -19,6 +19,7 @@ struct CreateSongView: View {
 
     @State private var showPicker = false
     @State private var busy = false
+    @State private var importing = false
     @State private var log: String?
     @State private var loadingModels = false
 
@@ -53,9 +54,10 @@ struct CreateSongView: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                     } else {
-                        Button(pickedFile == nil ? "选择音频文件" : "已选：\(pickedName)") {
+                        Button(importing ? "正在导入音频…" : (pickedFile == nil ? "选择音频文件" : "已选：\(pickedName)")) {
                             showPicker = true
                         }
+                        .disabled(importing)
                         Text("支持 mp3 / wav / flac / m4a 等，将上传到服务器。")
                             .font(.caption)
                             .foregroundColor(.secondary)
@@ -98,18 +100,51 @@ struct CreateSongView: View {
                 }
             }
             .navigationTitle("生成翻唱")
-            .sheet(isPresented: $showPicker) {
-                DocumentPicker(onPick: { url in
-                    pickedFile = url
-                    pickedName = url.lastPathComponent
-                    log = "✅ 音频已导入，可以开始生成"
-                }, onError: { message in
-                    pickedFile = nil
-                    pickedName = ""
-                    log = "❌ 音频导入失败：\(message)\n请先在“文件”App 中把音频下载到本机，再重新选择。"
-                })
+            .fileImporter(isPresented: $showPicker, allowedContentTypes: [.audio], allowsMultipleSelection: false) { result in
+                handlePickedFiles(result)
             }
             .onAppear(perform: loadModels)
+        }
+    }
+
+    private func handlePickedFiles(_ result: Result<[URL], Error>) {
+        switch result {
+        case .failure(let error):
+            importing = false
+            log = "❌ 文件选择失败：\(error.localizedDescription)"
+        case .success(let urls):
+            guard let source = urls.first else {
+                log = "❌ 没有取得所选音频"
+                return
+            }
+            importing = true
+            pickedFile = nil
+            pickedName = ""
+            log = "正在把音频导入 App…"
+            let scoped = source.startAccessingSecurityScopedResource()
+            DispatchQueue.global(qos: .userInitiated).async {
+                defer { if scoped { source.stopAccessingSecurityScopedResource() } }
+                do {
+                    let folder = FileManager.default.temporaryDirectory
+                        .appendingPathComponent("ReplayCloudImports", isDirectory: true)
+                        .appendingPathComponent(UUID().uuidString, isDirectory: true)
+                    try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+                    let destination = folder.appendingPathComponent(source.lastPathComponent)
+                    try FileManager.default.copyItem(at: source, to: destination)
+                    DispatchQueue.main.async {
+                        pickedFile = destination
+                        pickedName = source.lastPathComponent
+                        importing = false
+                        log = "✅ 音频已导入，可以开始生成"
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        importing = false
+                        pickedFile = nil
+                        log = "❌ 音频导入失败：\(error.localizedDescription)\n请先在“文件”App 中把音频下载到本机，再重新选择。"
+                    }
+                }
+            }
         }
     }
 
