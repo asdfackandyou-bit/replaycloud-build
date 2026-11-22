@@ -1,0 +1,1387 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Replay",
+    "description": "Api for replay",
+    "version": "1.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Index",
+        "operationId": "index",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/device_options": {
+      "get": {
+        "summary": "Device Options",
+        "operationId": "deviceOptions",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceOptionsResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/training_available": {
+      "get": {
+        "summary": "Training Available",
+        "operationId": "trainingAvailable",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrainingAvailableResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/song_progress": {
+      "post": {
+        "summary": "Song Progress",
+        "description": "Create the song.",
+        "operationId": "songProgress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobProgressReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobProgressResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/training_progress": {
+      "post": {
+        "summary": "Training Progress",
+        "description": "Progress from the model training job - not very clean as we reuse the same model, but whatever.",
+        "operationId": "trainingProgress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobProgressReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobProgressResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create_song": {
+      "post": {
+        "summary": "Create Song",
+        "description": "Create the song.",
+        "operationId": "createSong",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCoverReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateSongResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create_model": {
+      "post": {
+        "summary": "Create Model",
+        "description": "Create the model.",
+        "operationId": "createModel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateModelReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateModelResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clear_job": {
+      "post": {
+        "summary": "Clear Job",
+        "operationId": "clearJob",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClearJobReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Clear Job Clear Job Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stop_job": {
+      "post": {
+        "summary": "Stop Job",
+        "operationId": "stopJob",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StopJobReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs": {
+      "get": {
+        "summary": "Jobs",
+        "operationId": "jobs",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobsResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stemming_models": {
+      "get": {
+        "summary": "Stemming Models",
+        "operationId": "stemmingModels",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StemmingModelsResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shutdown": {
+      "post": {
+        "summary": "Shutdown",
+        "operationId": "shutdown",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShutdownResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ClearJobReq": {
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "title": "Jobid"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "jobId"
+        ],
+        "title": "ClearJobReq"
+      },
+      "CreateCoverReq": {
+        "properties": {
+          "outputDirectory": {
+            "type": "string",
+            "title": "Outputdirectory"
+          },
+          "modelsPath": {
+            "type": "string",
+            "title": "Modelspath"
+          },
+          "weightsPath": {
+            "type": "string",
+            "title": "Weightspath"
+          },
+          "modelData": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ModelWeightInfo"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Modeldata"
+          },
+          "songUrlOrFilePath": {
+            "type": "string",
+            "title": "Songurlorfilepath"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CreateSongOptions"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadata"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "outputDirectory",
+          "modelsPath",
+          "weightsPath",
+          "songUrlOrFilePath"
+        ],
+        "title": "CreateCoverReq"
+      },
+      "CreateModelOptions": {
+        "properties": {
+          "epochs": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epochs"
+          },
+          "patience": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Patience",
+            "default": 40
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "default": "MyFirstModel"
+          },
+          "preStemmed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prestemmed",
+            "default": false
+          },
+          "device": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device"
+          },
+          "stemmingMethod": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stemmingmethod",
+            "default": "UVR-MDX-NET Voc FT (pth)"
+          },
+          "startTime": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Starttime",
+            "default": 0
+          },
+          "endTime": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Endtime",
+            "default": 0
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "CreateModelOptions"
+      },
+      "CreateModelReq": {
+        "properties": {
+          "outputDirectory": {
+            "type": "string",
+            "title": "Outputdirectory"
+          },
+          "modelsPath": {
+            "type": "string",
+            "title": "Modelspath"
+          },
+          "audioFilesPath": {
+            "type": "string",
+            "title": "Audiofilespath"
+          },
+          "weightsPath": {
+            "type": "string",
+            "title": "Weightspath"
+          },
+          "trainingDir": {
+            "type": "string",
+            "title": "Trainingdir"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CreateModelOptions"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "outputDirectory",
+          "modelsPath",
+          "audioFilesPath",
+          "weightsPath",
+          "trainingDir"
+        ],
+        "title": "CreateModelReq"
+      },
+      "CreateModelResp": {
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "title": "Jobid"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "generative",
+              "cover",
+              "train"
+            ],
+            "title": "Type",
+            "default": "train"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "jobId"
+        ],
+        "title": "CreateModelResp"
+      },
+      "CreateSongOptions": {
+        "properties": {
+          "pitch": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pitch"
+          },
+          "instrumentalsPitch": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrumentalspitch"
+          },
+          "preStemmed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prestemmed",
+            "default": false
+          },
+          "vocalsOnly": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vocalsonly",
+            "default": false
+          },
+          "deEchoDeReverb": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deechodereverb",
+            "default": false
+          },
+          "f0Method": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "crepe",
+                  "crepe-tiny",
+                  "mangio-crepe",
+                  "mangio-crepe-tiny",
+                  "rmvpe"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "F0Method",
+            "default": "rmvpe"
+          },
+          "device": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device"
+          },
+          "stemmingMethod": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stemmingmethod",
+            "default": "UVR-MDX-NET Voc FT (pth)"
+          },
+          "indexRatio": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indexratio",
+            "default": 0.75
+          },
+          "crepeHopLength": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crepehoplength",
+            "default": 160
+          },
+          "filterRadius": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Filterradius",
+            "default": 3
+          },
+          "consonantProtection": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Consonantprotection",
+            "default": 0.35
+          },
+          "outputFormat": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "wav",
+                  "mp3_192k",
+                  "mp3_320k"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outputformat",
+            "default": "mp3_192k"
+          },
+          "volumeEnvelope": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Volumeenvelope",
+            "default": 1
+          },
+          "startTime": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Starttime",
+            "default": 0
+          },
+          "endTime": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Endtime",
+            "default": 0
+          },
+          "key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Key"
+          },
+          "bpm": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bpm"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "CreateSongOptions"
+      },
+      "CreateSongResp": {
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "title": "Jobid"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "generative",
+              "cover",
+              "train"
+            ],
+            "title": "Type",
+            "default": "cover"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "jobId"
+        ],
+        "title": "CreateSongResp"
+      },
+      "DeviceOptionsResp": {
+        "properties": {
+          "devices": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Devices"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "devices"
+        ],
+        "title": "DeviceOptionsResp"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthResp": {
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "title": "Ok",
+            "default": true
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "HealthResp"
+      },
+      "JobProgressReq": {
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "title": "Jobid"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "jobId"
+        ],
+        "title": "JobProgressReq"
+      },
+      "JobProgressResp": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "processing",
+              "errored",
+              "completed",
+              "unknown_job",
+              "unknown",
+              "stopped"
+            ],
+            "title": "Status"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "generative",
+              "cover",
+              "train"
+            ],
+            "title": "Type",
+            "default": "cover"
+          },
+          "jobId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jobid"
+          },
+          "prompt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prompt"
+          },
+          "melodyFile": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Melodyfile"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "elapsedSeconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Elapsedseconds"
+          },
+          "percent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Percent"
+          },
+          "remainingSeconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remainingseconds"
+          },
+          "outputFilepath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outputfilepath"
+          },
+          "inputFilepath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inputfilepath"
+          },
+          "preDeechoVocalsFile": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Predeechovocalsfile"
+          },
+          "originalVocalsPath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalvocalspath"
+          },
+          "convertedVocalsPath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Convertedvocalspath"
+          },
+          "instrumentalsPath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrumentalspath"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CreateSongOptions"
+              },
+              {
+                "$ref": "#/components/schemas/CreateModelOptions"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Options"
+          },
+          "modelData": {
+            "items": {
+              "$ref": "#/components/schemas/ModelWeightInfo"
+            },
+            "type": "array",
+            "title": "Modeldata",
+            "default": []
+          },
+          "songHash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Songhash"
+          },
+          "trackName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trackname"
+          },
+          "outputDirectory": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outputdirectory"
+          },
+          "modelsPath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Modelspath"
+          },
+          "audioFilesPath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audiofilespath"
+          },
+          "weightsPath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weightspath"
+          },
+          "trainingDir": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trainingdir"
+          },
+          "epochs": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epochs"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadata"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "JobProgressResp"
+      },
+      "JobsResp": {
+        "properties": {
+          "jobs": {
+            "items": {
+              "$ref": "#/components/schemas/JobProgressResp"
+            },
+            "type": "array",
+            "title": "Jobs"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "jobs"
+        ],
+        "title": "JobsResp"
+      },
+      "ModelWeightInfo": {
+        "properties": {
+          "modelId": {
+            "type": "string",
+            "title": "Modelid"
+          },
+          "weight": {
+            "type": "number",
+            "title": "Weight"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "modelId",
+          "weight"
+        ],
+        "title": "ModelWeightInfo"
+      },
+      "ShutdownResp": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "default": true
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "ShutdownResp"
+      },
+      "StemmingModel": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "files": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Files"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "MDX-Net",
+              "VR Arc"
+            ],
+            "title": "Type"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "name",
+          "files",
+          "type"
+        ],
+        "title": "StemmingModel"
+      },
+      "StemmingModelsResp": {
+        "properties": {
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/StemmingModel"
+            },
+            "type": "array",
+            "title": "Models"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "models"
+        ],
+        "title": "StemmingModelsResp"
+      },
+      "StopJobReq": {
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "title": "Jobid"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "jobId"
+        ],
+        "title": "StopJobReq"
+      },
+      "TrainingAvailableResp": {
+        "properties": {
+          "available": {
+            "type": "boolean",
+            "title": "Available",
+            "default": false
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "TrainingAvailableResp"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
