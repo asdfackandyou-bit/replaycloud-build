@@ -165,9 +165,9 @@ struct DocumentPicker: UIViewControllerRepresentable {
                     }
                     if let copyError { throw copyError }
                     if let coordinationError { throw coordinationError }
-                    DispatchQueue.main.async { onPick(destination) }
+                    DispatchQueue.main.async { self.onPick(destination) }
                 } catch {
-                    DispatchQueue.main.async { onError(error.localizedDescription) }
+                    DispatchQueue.main.async { self.onError(error.localizedDescription) }
                 }
             }
         }
