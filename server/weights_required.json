@@ -1,0 +1,110 @@
+[
+ {
+  "name": "D32k.pth",
+  "type": "file",
+  "size": 142875703,
+  "sha1": "7535cb958de6d268e2e8acd3365aca09e387a8ea"
+ },
+ {
+  "name": "D40k.pth",
+  "type": "file",
+  "size": 142875703,
+  "sha1": "20794ff05a889282b3fa10e272f5ec99077aa70e"
+ },
+ {
+  "name": "D48k.pth",
+  "type": "file",
+  "size": 142875703,
+  "sha1": "18a02e23f801e3b9e2442ee189c2e5f147f1d1f5"
+ },
+ {
+  "name": "G32k.pth",
+  "type": "file",
+  "size": 73811639,
+  "sha1": "0847ddb0b17a966a91cc2d3da78c1e84daaa4b06"
+ },
+ {
+  "name": "G40k.pth",
+  "type": "file",
+  "size": 72959671,
+  "sha1": "089aa9ca76e776aaaa3f0fcc2634bfdc7e336028"
+ },
+ {
+  "name": "G48k.pth",
+  "type": "file",
+  "size": 75318967,
+  "sha1": "746988b7ad360d7f3e26067468a054c1456ba91a"
+ },
+ {
+  "name": "G-f048k-TITAN-Medium.pth",
+  "type": "file",
+  "size": 452338845,
+  "sha1": "7abcb314235bce54b7dc8f9507712b4b44b62d1c"
+ },
+ {
+  "name": "D-f048k-TITAN-Medium.pth",
+  "type": "file",
+  "size": 857126469,
+  "sha1": "828cb37f6257581f0f2732a0ba4e69d24696a1be"
+ },
+ {
+  "name": "f0D32k.pth",
+  "type": "file",
+  "size": 142875703,
+  "sha1": "d9187a76bf034e23592c282192af3540a3f851ac"
+ },
+ {
+  "name": "f0D40k.pth",
+  "type": "file",
+  "size": 142875703,
+  "sha1": "650feb3c3820ac4d45aaaa06d1dbef8dd36cbc5b"
+ },
+ {
+  "name": "f0D48k.pth",
+  "type": "file",
+  "size": 142875703,
+  "sha1": "56056c8cfa66d2d70244a4b71433efe9a9c54c3b"
+ },
+ {
+  "name": "f0G32k.pth",
+  "type": "file",
+  "size": 73950049,
+  "sha1": "bf4fc7e438fe6ed93e6dae485044c9d92b21f513"
+ },
+ {
+  "name": "f0G40k.pth",
+  "type": "file",
+  "size": 73106273,
+  "sha1": "e36ee1bb13ea45da20efbfa8cd2b151e9c1d938f"
+ },
+ {
+  "name": "f0G48k.pth",
+  "type": "file",
+  "size": 75465569,
+  "sha1": "f2bd4612b07193df9fb7d05fffce184e1aeee80a"
+ },
+ {
+  "name": "rmvpe_20231006.pt",
+  "type": "file",
+  "size": 181184272,
+  "sha1": "a620a75526053cf06aa43bb2d50c29ad64cc0d9b"
+ },
+ {
+  "name": "fcpe.pt",
+  "type": "file",
+  "size": 69005189,
+  "sha1": "eae914d8829acb594b073bc4f7057e8936d9e87b"
+ },
+ {
+  "name": "hubert_transformers.pt",
+  "type": "file",
+  "size": 188812666,
+  "sha1": "05140aee2e0f44452f75710a67b12f1061cf40f7"
+ },
+ {
+  "name": "rvcv1_projection.pt",
+  "type": "file",
+  "size": 788970,
+  "sha1": "b2c7d462f6f2643c69d605e8a528b2778baffbea"
+ }
+]
