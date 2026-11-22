@@ -81,7 +81,11 @@ struct APIClient {
         let boundary = "ReplayCloud-\(UUID().uuidString)"
         req.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
 
+        guard FileManager.default.isReadableFile(atPath: fileURL.path) else {
+            throw APIError.decode("App 无法读取已选音频，请重新选择文件")
+        }
         let fileData = try Data(contentsOf: fileURL)
+        guard !fileData.isEmpty else { throw APIError.decode("所选音频是空文件") }
         var body = Data()
         body.append("--\(boundary)\r\n")
         body.append("Content-Disposition: form-data; name=\"\(field)\"; filename=\"\(filename)\"\r\n")
