@@ -26,6 +26,8 @@ struct ContentView: View {
 struct SettingsView: View {
     var firstSetup: Bool = false
     @EnvironmentObject var settings: ServerSettings
+    @State private var draftBaseURL = ""
+    @State private var draftToken = ""
     @State private var testing = false
     @State private var result: String?
 
@@ -33,30 +35,35 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 if firstSetup {
-                    Text("欢迎使用 ReplayCloud\n\n这是 Replay 的 iOS 客户端，需要连接一台已部署官方推理服务端的云服务器（部署方法见 README）。官方云端已关闭，本应用不依赖 weights.com。")
+                    Text("欢迎使用 ReplayCloud\n\n这是 Replay 的 iOS 客户端，需要连接一台已部署官方推理服务端的云服务器（部署方法见 README）。官方云端已关闭，本应用不依赖 weights.com。\n\n服务器尚未部署时可以先留空；输入完成后必须点“保存并进入”。")
                         .font(.callout)
                         .foregroundColor(.secondary)
                 }
                 Section("服务器") {
-                    TextField("地址，如 http://1.2.3.4:8080", text: $settings.baseURL)
+                    TextField("地址，如 http://1.2.3.4:8080", text: $draftBaseURL)
                         .keyboardType(.URL)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
-                    SecureField("访问令牌", text: $settings.token)
-                        .textInputAutocapitalization(.never)
+                    TextField("访问令牌", text: $draftToken)
                         .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .font(.system(.body, design: .monospaced))
                 }
                 Section {
                     Button(testing ? "正在测试…" : "测试连接") { test() }
-                        .disabled(testing || !settings.isConfigured)
+                        .disabled(testing || !draftsValid)
+                    Button(firstSetup ? "保存并进入" : "保存设置") { save() }
+                        .disabled(!draftsValid)
                     if let result {
                         Text(result)
                             .font(.callout)
                             .foregroundColor(result.hasPrefix("✅") ? .green : .red)
                     }
+                } footer: {
+                    Text("访问令牌由你在部署服务器时设置；不是 GitHub 或 Replay 官方账号密码。")
                 }
                 Section("关于") {
-                    LabeledContent("客户端", value: "ReplayCloud 1.0")
+                    LabeledContent("客户端", value: "ReplayCloud 1.1")
                     LabeledContent("推理", value: "官方 Replay Server（linux-x64）")
                     Text("提示：http 明文连接仅建议个人临时使用；有域名可在服务器前加 HTTPS 反代。")
                         .font(.caption)
@@ -64,11 +71,29 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle(firstSetup ? "初始设置" : "服务器")
+            .onAppear {
+                draftBaseURL = settings.baseURL
+                draftToken = settings.token
+            }
         }
     }
 
+    private var draftsValid: Bool {
+        !draftBaseURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !draftToken.isEmpty
+    }
+
+    private func save() {
+        settings.baseURL = draftBaseURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        settings.token = draftToken
+        if !firstSetup { result = "✅ 设置已保存" }
+    }
+
     private func test() {
-        guard let api = settings.api else { return }
+        guard let url = URL(string: draftBaseURL.trimmingCharacters(in: .whitespacesAndNewlines)) else {
+            result = "❌ 服务器地址格式不正确"
+            return
+        }
+        let api = APIClient(baseURL: url, token: draftToken)
         testing = true
         result = nil
         Task {
