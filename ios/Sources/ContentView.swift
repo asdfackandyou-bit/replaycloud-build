@@ -63,7 +63,7 @@ struct SettingsView: View {
                     Text("访问令牌由你在部署服务器时设置；不是 GitHub 或 Replay 官方账号密码。")
                 }
                 Section("关于") {
-                    LabeledContent("客户端", value: "ReplayCloud 1.2")
+                    LabeledContent("客户端", value: "ReplayCloud 1.3")
                     LabeledContent("推理", value: "官方 Replay Server（linux-x64）")
                     Text("提示：http 明文连接仅建议个人临时使用；有域名可在服务器前加 HTTPS 反代。")
                         .font(.caption)
